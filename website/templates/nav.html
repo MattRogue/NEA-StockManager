@@ -1,0 +1,15 @@
+{% block links %}
+<link
+		rel="stylesheet"
+		href="{{ url_for('static', filename='css/nav.css') }}"
+/>
+{% endblock %}
+{% block content %}
+<div class="nav">
+	{% if user.is_authenticated %}
+	<!-- placeholder values -->
+	<a href="{{ url_for('views.home') }}">Home</a>
+	<a class="logout" href="{{ url_for('auth.logout') }}">Logout</a>
+	{% endif %}
+</div>
+{% endblock %}

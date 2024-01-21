@@ -1,0 +1,40 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: system-ui;
+}
+
+.alert{
+	position: top;
+	top: 0;
+	left: 0;
+	width: fit;
+	height: fit;
+	padding: 10px;
+	padding-top: 5px;
+	color: white;
+	background-color: black;
+	border-radius: 0 0 15px 15px;
+	display: block; /* Initially hide the alert */
+	position: relative;
+	text-align: center;
+}
+.close-alert{
+	background: transparent;
+	border: none;
+	margin: auto;
+	font-size: 1.2em;
+	font-weight: 600;
+	color: white;
+}
+.close-alert:hover{
+	color: grey;
+}
+
+.failed{
+	background-color: red;
+}
+.success{
+	background-color: green;
+}

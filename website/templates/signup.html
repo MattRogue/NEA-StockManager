@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Create Account{% endblock %}
+{% block links %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('static', filename='css/login.css') }}"
+/>
+{% endblock %}
+<!-- No navigation content -->
+{% block content %}
+<main class="login-box">
+
+	<h2>Create an account</h2>
+	
+	<form method="POST">
+
+		<div class="input-field">
+			<input type="text" name="email" required/>
+			<label for="email">Email</label>
+		</div>
+
+		<div class="input-field">
+			<input type="password" name="password" required/>
+			<label for="password">Password</label>
+		</div>
+		
+		<div class="input-field">
+			<input type="text" name="firstname" required/>
+			<label for="firstname">Firstname</label>
+		</div>
+		
+		<div class="input-field">
+			<input type="text" name="surname" required/>
+			<label for="surname">Surname</label>
+		</div>
+		
+		<div class="input-field">
+			<input type="text" name="type" required/>
+			<label for="type">Type</label>
+		</div>
+	
+		<button type="submit" class="login-button">Create Account</button>
+	
+	</form>
+</main>
+{% endblock %}

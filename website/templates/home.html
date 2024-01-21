@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block links %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{% endblock %}
+
+{% block content %}
+{% include 'nav.html' %}
+<h1>Home</h1>
+<div class="content">
+	<div class="child">
+		<h2>Classes</h2>
+		{% for i in range(10) %}
+		<div class="expandable">
+			<button type="checkbox" id="expandable-btn-{{ i+1 }}" onclick="toggleContent({{ i+1 }})">Class {{ i+1 }}</button>
+			<div class="cls-content" id="{{ i+1 }}">
+				<!-- PLACEHOLDER -->
+				<h3>Test {{ i+1 }}</h3>
+				<p>tabled content</p>
+				<!-- END PLACEHOLDER -->
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="child">
+		<h2>Orders</h2>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+	function toggleContent(id) {
+		var content = document.getElementById(id);
+		if (content.style.display === "none") {
+			content.style.display = "initial";
+		} else {
+			content.style.display = "none";
+		}
+	}
+</script>
+{% endblock %}

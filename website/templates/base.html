@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link
+		rel="stylesheet"
+		href="{{ url_for('static', filename='css/base.css') }}"
+	/>
+	{% block links %}{% endblock %}
+	<title>{% block title %}Admin{% endblock %}</title>
+</head>
+<body>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %} 
+                <div class="alert {{category}}" id="alert" role="alert">
+                    {{ message }}
+                    <button type="button" class="close-alert" onclick="closeAlert()" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+				<script>showAlert();</script>
+            {% endfor %}
+		{% endif %}
+	{% endwith %}
+{% block content %}{% endblock %}
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+	function closeAlert() {
+		var alert = document.getElementById("alert");
+		alert.style.display = "none";
+	}
+	function showAlert() {
+		var alert = document.getElementById("alert");
+		alert.style.display = "initial";
+	}
+</script>
+{% block js %}{% endblock %}
+</body>
+</html>

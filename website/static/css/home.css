@@ -1,0 +1,53 @@
+body{
+	text-align: center;
+	background-color: #989ca6;
+	color: #283040;
+}
+
+.content {
+	display: flex;
+	direction: flex-column;
+	width: 90vw;
+	margin: 0 auto;
+}
+
+.content .child{
+	margin: 30px;
+	border: 1px solid #283040;
+	border-radius: 5px;
+	height: fit;
+	width: 40%;
+	font-size: 1.2em;
+}
+.content .child:first-child{
+	width: 60%;
+}
+
+.content h2{
+	border-radius: 5px 5px 0 0;
+	background-color: #283040;
+	color: white;
+	text-align: center;
+}
+
+.expandable{
+	border-bottom: solid 1px;
+	padding: 5px;
+}
+.expandable:last-child{
+	border-bottom: none;
+}
+
+.expandable button{
+	font-weight: 600;
+	font-size: 1em;
+	cursor: pointer;
+	z-index: 1;
+	background-color: transparent;
+	border: none;
+	transition: 0.5s ease;
+}
+
+.expandable .cls-content{
+	display: none; /* set to "initial" upon open */
+}
