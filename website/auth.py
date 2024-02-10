@@ -1,8 +1,5 @@
 from flask import Blueprint, render_template, request, session, flash, redirect, url_for
-from .client import Client
-from .models import create_staff, check_staff
 from flask_login import login_user, login_required, logout_user, current_user
-
 
 
 auth = Blueprint('auth', __name__)
@@ -11,13 +8,12 @@ auth = Blueprint('auth', __name__)
 @auth.route("/signup/", methods=["POST", "GET"])
 @login_required
 def signup():
+    from .models import create_staff
     if request.method == "POST":
         email = request.form.get("email").lower()
         password = request.form.get("password")
-        firstname = request.form.get("firstname").capitalize()
-        surname = request.form.get("surname").capitalize()
         type = request.form.get("type").capitalize()
-        user = create_staff(email, password, firstname, surname, type)
+        user = create_staff(email, password, department, type)
         if user:
             flash("Account created!", category="success")
         else:
@@ -34,7 +30,8 @@ def logout():
 
 
 @auth.route('/login/', methods=["POST", "GET"])
-def login():        
+def login():   
+    from .models import check_staff
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -49,7 +46,7 @@ def login():
 
 
 @auth.route("/")
-def index(): #Check if user is logged in then redirect=default
+def index(): #Check if user is logged in
     if current_user.is_authenticated:
         return redirect(url_for("views.home"))
     return redirect(url_for("auth.login"))
