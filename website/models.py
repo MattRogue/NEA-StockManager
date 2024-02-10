@@ -22,6 +22,20 @@ class OrderStatus(Enum):
     ORDERED = auto()
     COMPLETED = auto()
 
+#Association Tables for M:M relationships
+requested = db.Table("requested",
+    db.Column("staff_id", db.Integer, db.ForeignKey("staff.id")),
+    db.Column("orders_id", db.Integer, db.ForeignKey("orders.id"))
+)
+accepted = db.Table("accepted",
+    db.Column("staff_id", db.Integer, db.ForeignKey("staff.id")),
+    db.Column("orders_id", db.Integer, db.ForeignKey("orders.id"))
+)
+
+ordered = db.Table("ordered",
+    db.Column("staff_id", db.Integer, db.ForeignKey("staff.id")),
+    db.Column("orders_id", db.Integer, db.ForeignKey("orders.id"))
+)
 #define database tables
 class Staff(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -33,28 +47,7 @@ class Staff(db.Model, UserMixin):
     #relationships
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
-    orders_requested = db.relationship(
-        'Orders',
-        foreign_keys='Orders.staff_requested_id',
-        back_populates='staff_requested'
-    )
-    orders_accepted = db.relationship(
-        'Orders',
-        foreign_keys='Orders.staff_accepted_id',
-        back_populates='staff_accepted',
-        primaryjoin=and_(
-            Staff.type==StaffType.HEAD,
-            Staff.id==db.foreign("Orders.staff_accepted_id"))
-    )
-    orders_ordered = db.relationship(
-        'Orders',
-        foreign_keys='Orders.staff_ordered_id',
-        back_populates='staff_ordered',
-        primaryjoin=and_(
-            department_id.name=="ADMIN",
-            Staff.id==db.foreign("Orders.staff_ordered_id"))
-    )
-
+    
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
@@ -97,25 +90,51 @@ class Orders(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
     arriving = db.Column(db.DateTime)
-    #relationships
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'))
-    staff_requested_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
-    staff_accepted_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
-    staff_ordered_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
-    staff_requested = db.relationship(
+    #relationships
+    requested_by = db.relationship(
         "Staff",
-        foreign_keys=[staff_requested_id],
-        back_populates="orders_requested"
-        )
-    staff_accepted = db.relationship(
+        secondary="requested",
+        backref="requested_orders"
+    )
+    orders_accepted = db.relationship(
         "Staff",
-        foreign_keys=[staff_accepted_id],
-        back_populates="orders_accepted"
-        )
-    staff_ordered = db.relationship(
+        secondary="accepted",
+        backref="accepted_orders"
+    )
+    orders_ordered = db.relationship(
         "Staff",
-        foreign_keys=[staff_ordered_id],
-        back_populates="orders_ordered"
-        )
-        
+        secondary="ordered",
+        backref="ordered_orders"
+    )
+
+##################
+
+##Require department, redundant fname and sname
+def create_staff(email: str, password: str, firstname: str, surname: str, type: str):
+    if Staff.query.filter_by(email=email).first():
+        return False
+
+    try:
+        type = StaffType[type.upper()]
+    except KeyError:
+        raise Exception("KeyError: StaffType accepts only TEMP, TEACHER, HEAD")
+        return False
+
+    user = Staff(
+        email=email,
+        password=generate_password_hash(password),
+        firstname=firstname,
+        surname=surname,
+        type=type
+    )
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+def check_staff(email: str, password: str):
+    user = Staff.query.filter_by(email=email).first()
+    if user and check_password_hash(user.password, password):
+        return user
+    return False

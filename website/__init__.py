@@ -1,17 +1,29 @@
-from os import path, getenv
-from datetime import timedelta
+from os import getenv
 
 from dotenv import load_dotenv
 
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+
 
 db = SQLAlchemy()
 load_dotenv()
 DB_NAME = getenv("DB_NAME")
 
+def create_database(app):
+    from os import path
+    if not path.exists("instance/"+DB_NAME):
+        with app.app_context():
+            db.create_all()
+            print("Created Database")
+        print("Database Loaded")
+        return
+
 def create_app():
+    from datetime import timedelta
+    
+    from flask import Flask
+    from flask_login import LoginManager
+    
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "test"
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
@@ -24,11 +36,31 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     
-    from .models import Staff, Department, Room, \
-        Stock, Orders, Supplier
+    from .models import Staff, Department, Room, Stock, Orders, Supplier, \
+        StaffType, generate_password_hash, check_staff
         
     create_database(app)
-
+    
+    with app.app_context():
+        #Verify default account
+        DEFAULT_EMAIL = getenv("DEFAULT_EMAIL")
+        DEFAULT_PASSWORD = getenv("DEFAULT_PASSWORD")
+        
+        if not check_staff(DEFAULT_EMAIL, DEFAULT_PASSWORD):
+            ##Initialise department and account        
+            admin_department = Department(name="ADMIN")
+            db.session.add(admin_department)
+            db.session.commit()
+                    
+            default_account = Staff(
+                email=DEFAULT_EMAIL,
+                password=generate_password_hash(DEFAULT_PASSWORD),
+                type=StaffType.HEAD,
+                department=admin_department
+            )
+            db.session.add(default_account)
+            db.session.commit()
+                    
     manager = LoginManager()
     manager.login_view = "auth.login"
     manager.init_app(app)
@@ -39,25 +71,3 @@ def create_app():
 
     return app
 
-
-def create_database(app):
-    if not path.exists("instance/"+DB_NAME):
-        from .utils import create_staff
-        with app.app_context():
-            db.create_all()
-            print("Created Database")
-            #Verify default account
-            DEFAULT_EMAIL = getenv("DEFAULT_EMAIL")
-            DEFAULT_PASSWORD = getenv("DEFAULT_PASSWORD")
-            default_account = create_staff(
-                email=DEFAULT_EMAIL,
-                password=DEFAULT_PASSWORD,
-                firstname="NULL",
-                surname="NULL",
-                type="HEAD"
-            )
-            if not default_account:
-                raise Exception("Error: Failed to load default account")
-            return
-        print("Database Loaded")
-        return
