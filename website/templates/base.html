@@ -20,7 +20,6 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-				<script>showAlert();</script>
             {% endfor %}
 		{% endif %}
 	{% endwith %}
@@ -34,8 +33,9 @@
 	}
 	function showAlert() {
 		var alert = document.getElementById("alert");
-		alert.style.display = "initial";
+		alert.style.display = "block";
 	}
+	setTimeout(closeAlert, 5000);
 </script>
 {% block js %}{% endblock %}
 </body>

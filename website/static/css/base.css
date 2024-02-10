@@ -16,7 +16,7 @@
 	color: white;
 	background-color: black;
 	border-radius: 0 0 15px 15px;
-	display: block; /* Initially hide the alert */
+	display: block;
 	position: relative;
 	text-align: center;
 }

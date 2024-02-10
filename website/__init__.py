@@ -60,6 +60,8 @@ def create_app():
             )
             db.session.add(default_account)
             db.session.commit()
+            
+            print("Default Account initialsed")
                     
     manager = LoginManager()
     manager.login_view = "auth.login"
