@@ -1,23 +1,30 @@
-/*
-bg: #283040 -> dark bluegrey
-*/
-
-container{
-	width: 250px;
-	background-color: #283040;
-	color: white;
+.nav{
+	background: #283040;
+	border-radius: 0 0 5px 5px;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+	text-align: center;
 }
 
-
-container nav a{
-	height: 100%;
-	padding: 0;
+.nav a{
+	color: #a87356;
 	text-decoration: none;
-	display: flex;
-	align-items: left;
+	font-weight: 700;
+	font-size: 1.5em;
+	position: relative;
+	margin: 50px;
+	cursor: pointer;
+	transition: 0.3 ease;
+}
+
+.nav a:hover{
+	color: #906449;
+}
+
+.nav a:active{	
 	color: white;
 }
 
-container nav a:hover{
-	background-color: grey;
+.nav .logout:hover{
+	color: red;
 }

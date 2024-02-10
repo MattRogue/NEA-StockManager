@@ -5,22 +5,11 @@
 />
 {% endblock %}
 {% block content %}
-
-<div class="container">
-	<div class="menu">
-		<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-			<path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/>
-		</svg>
-	</div>
-
-	<div class="nav">
-		{% if user.is_authenticated %}
-		<ul>	
-			<!-- placeholder values -->
-			<li><a href="{{ url_for('views.home') }}">Home</a></li>
-			<li><a class="logout" href="{{ url_for('auth.logout') }}">Logout</a></li>
-		</ul>
-		{% endif %}
-	</div>
+<div class="nav">
+	{% if user.is_authenticated %}
+	<!-- placeholder values -->
+	<a href="{{ url_for('views.home') }}">Home</a>
+	<a class="logout" href="{{ url_for('auth.logout') }}">Logout</a>
+	{% endif %}
 </div>
 {% endblock %}
