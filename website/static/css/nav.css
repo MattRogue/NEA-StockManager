@@ -1,30 +1,105 @@
-.nav{
+.nav-container{
 	background: #283040;
 	border-radius: 0 0 5px 5px;
-	padding: 10px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
 	text-align: center;
 }
 
+
+#open-nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+#open-nav ion-icon{
+	height: 25px;
+	width: 25px;
+	color: #283040;
+}
+
+#close-nav{
+	color: #a87356;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.nav {
+	display: none;
+	flex-direction: column;
+	transition: 0.3 ease;
+	position: absolute; /* Set absolute positioning for the nav */
+    top: 0; /* Align to the top of the container */
+    left: 0; /* Align to the left of the container */
+    width: 20%; /* Take up the full width of the container */
+    padding: 20px;
+    display: none; /* Initially hide the nav */
+    background: rgba(40,48,64,0.9); /* Match the background color of the container */
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+
+.nav ion-icon{
+	color: #a87356;
+	height: 25px;
+	width: 25px;
+}
+.click:hover ion-icon, .nav a:hover{color: #906449;}
+.click:active ion-icon, .nav a:active{color: white;}
+.click{
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+.nav ul{
+	list-style-type: none;
+}
+
+#profile{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+}
+
+#logout{
+	margin-top: 10px;
+	position: absolute;
+	top: 1;
+	right: 0;
+	display: none;
+}
+
+#logout:hover ion-icon{color: red;}
+#logout:active ion-icon{color: white;}
+
+#settings{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin-bottom: 2px;
+	margin-left: 2px;
+}
+
+#settings ion-icon{
+	color: #a87356;
+	height: 24px;
+	width: 24px;	
+}
+
+#settings:hover ion-icon{color: #906449;}
+#settings:active ion-icon{color: white;}
+
 .nav a{
 	color: #a87356;
 	text-decoration: none;
-	font-weight: 700;
-	font-size: 1.5em;
 	position: relative;
-	margin: 50px;
 	cursor: pointer;
-	transition: 0.3 ease;
-}
-
-.nav a:hover{
-	color: #906449;
-}
-
-.nav a:active{	
-	color: white;
-}
-
-.nav .logout:hover{
-	color: red;
+	font-size: 1.2em;
 }

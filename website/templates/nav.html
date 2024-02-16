@@ -5,11 +5,62 @@
 />
 {% endblock %}
 {% block content %}
-<div class="nav">
-	{% if user.is_authenticated %}
-	<!-- placeholder values -->
-	<a href="{{ url_for('views.home') }}">Home</a>
-	<a class="logout" href="{{ url_for('auth.logout') }}">Logout</a>
-	{% endif %}
+{% if user.is_authenticated %}
+<div class="nav-container">
+	<button id="open-nav" onclick="toggleNav('open-nav')">
+		<ion-icon name="menu-outline"/>
+	</button>
+	<div class="nav" id="nav">
+		<button class="click" id="close-nav" onclick="toggleNav('close-nav')">
+			<ion-icon name="close"/>
+		</button>
+		<button class="click" id="profile" onclick="toggleContent('logout')">
+			<ion-icon name="person-circle"/>
+		</button>
+		<button class="click" id="logout">
+			<a onclick="confirm_alert('You will be logged out')" href="{{ url_for('auth.logout') }}" close>
+				<ion-icon name="log-out-outline"/>
+			</a>
+		</button>
+		<button class="click" id="settings">
+			<a href="{{ url_for('views.home') }}">
+				<ion-icon name="settings-outline"/>
+			</a>
+		</button>
+		<ul>
+			<li><a href="{{ url_for('views.home') }}">Home</a></li>
+			<li><a href="{{ url_for('views.home') }}">Inventory</a></li>
+			<li>
+				<a href="{{ url_for('views.home') }}">
+					{% if user.type != StaffType.HEAD %}
+						Requests
+					{% else %}
+						Orders
+					{% endif %}
+				</a>
+			</li>
+		</ul>
+	</div>
 </div>
+{% endif %}
+{% endblock %}
+{% block js %}
+<script>
+	function toggleNav(id) {
+		var nav = document.getElementById("nav");
+		var icon = document.getElementById(id);
+		if (nav.style.display === "none" || nav.style.display === "") {
+			nav.style.display = "flex";
+		} else {
+			nav.style.display = "none";
+		}
+	}
+	document.addEventListener('click', function(event) {
+    var menu = document.getElementsByClassName('nav-container')[0];
+	var nav = document.getElementById('nav');
+    if (!menu.contains(event.target)) {
+        nav.style.display = 'none';
+    }
+});
+</script>
 {% endblock %}

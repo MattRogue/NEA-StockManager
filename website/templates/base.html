@@ -8,7 +8,7 @@
 		href="{{ url_for('static', filename='css/base.css') }}"
 	/>
 	{% block links %}{% endblock %}
-	<title>{% block title %}Admin{% endblock %}</title>
+	<title>{% block title %}Loading{% endblock %}</title>
 </head>
 <body>
 	{% with messages = get_flashed_messages(with_categories=true) %}
@@ -29,13 +29,32 @@
 <script>
 	function closeAlert() {
 		var alert = document.getElementById("alert");
-		alert.style.display = "none";
+		if (alert != null) {
+			alert.style.display = "none";
+		}
 	}
 	function showAlert() {
 		var alert = document.getElementById("alert");
 		alert.style.display = "block";
 	}
-	setTimeout(closeAlert, 5000);
+	setTimeout(closeAlert, 3000);
+	
+	function toggleContent(id) {
+		var content = document.getElementById(id);
+		if (content.style.display === "none" || content.style.display === "") {
+			content.style.display = "block";
+		} else {
+			content.style.display = "none";
+		}
+	}
+	
+	function confirm_alert(message) {
+		var result = confirm(message);
+			if (result == false) {
+				event.preventDefault();
+			}
+	}
+
 </script>
 {% block js %}{% endblock %}
 </body>

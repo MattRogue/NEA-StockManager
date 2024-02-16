@@ -52,6 +52,7 @@ body{
 	font-size: 1em;
 	font-weight: 500;
 	padding: 0 35px 0 5px;
+	color: black;
 }
 
 .input-field label{
@@ -85,6 +86,7 @@ body{
 	font-weight: 700;
 	cursor: pointer;
 	transition: 0.3s ease;
+	color: #283040
 }
 
 .login-button:hover{
