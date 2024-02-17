@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Inventory{% endblock %}
+{% block links %}
+<link
+	rel="stylesheet"
+	href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{% endblock %}
+{% block content %}
+{% include 'nav.html' %}
+
+<h1>Inventory</h1>
+
+{% endblock %}
